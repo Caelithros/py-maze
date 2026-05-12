@@ -22,7 +22,8 @@ BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 YELLOW = (255, 240, 0)
-C_BLUE = (100, 100, 255)
+PURPLE = (180, 20, 255)
+C_BLUE = (40, 40, 225)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Maze Explorer - Student Edition - C")
@@ -35,7 +36,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         # To use an image later: self.image = pygame.image.load("player.png")
-        self.image = pygame.Surface((TILE_SIZE - TILE_SIZE/4, TILE_SIZE - TILE_SIZE/4))
+        self.image = pygame.Surface((TILE_SIZE*3/4, TILE_SIZE*3/4))
         self.image.fill(C_BLUE)
         self.rect = self.image.get_rect()
 
@@ -76,7 +77,9 @@ class Player(pygame.sprite.Sprite):
             if event.key == pygame.K_DOWN:
                 self.rect.y= self.rect.y + self.speed
                 self.facing = "DOWN"
-
+            if event.key == pygame.K_QUIT:
+                pygame.quit()
+                sys.exit()
 
         # --- Wall Collision Logic (Provided so you don't get stuck!) ---
         # If the player hits a wall after moving, we push them back to their old position.
@@ -89,7 +92,7 @@ class Wall(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.Surface((TILE_SIZE, TILE_SIZE))
-        self.image.fill(WHITE)
+        self.image.fill(PURPLE)
         self.rect = self.image.get_rect()
         self.rect.x = x * TILE_SIZE
         self.rect.y = y * TILE_SIZE
@@ -97,7 +100,7 @@ class Wall(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.Surface((TILE_SIZE - TILE_SIZE/4, TILE_SIZE - TILE_SIZE/4))
+        self.image = pygame.Surface((TILE_SIZE*3/4, TILE_SIZE*3/4))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = x * TILE_SIZE * 1.125
@@ -105,13 +108,14 @@ class Enemy(pygame.sprite.Sprite):
         self.move_timer = 0
         self.direction = 1
 
+    #C Updated enemy movement to also scale on their speed/tile size
     def update(self):
         # Simple enemy movement: wobble back and forth
         self.move_timer += 1
         if self.move_timer > 30:
             self.direction *= -1
             self.move_timer = 0
-        self.rect.y += self.direction * 2
+        self.rect.y += self.direction * TILE_SIZE/20 
 
 class Goal(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -151,6 +155,7 @@ class Bullet(pygame.sprite.Sprite):
 # 3. LEVEL DESIGN (Highly Customizable)
 # ==========================================
 # W = Wall, P = Player Start, E = Enemy, G = Goal, Space = Empty
+#C Adjusted level, and changed it to be 24 by 12
 level_map = [
     "WWWWWWWWWWWWWWWWWWWWWWWW",
     "WP    W           E    W",
@@ -233,6 +238,7 @@ while running:
     # If a bullet hits an enemy, BOTH should disappear (dokill=True).
 
     # [WRITE YOUR BULLET COLLISION CODE HERE]
+    #C Bullets should be destroyed on collision with enemies and walls
     pygame.sprite.groupcollide(bullets, enemies, True, True)
     pygame.sprite.groupcollide(bullets, walls, True, False)
     # ==========================================
