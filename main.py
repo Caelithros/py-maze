@@ -23,7 +23,8 @@ C_RED = (255, 50, 50)
 GREEN = (0, 255, 0)
 YELLOW = (255, 240, 0)
 PURPLE = (180, 20, 255)
-C_BLUE = (40, 40, 225)
+C_BLUE = (30, 144, 255)
+C_BACKGROUND_PURPLE = (30, 15, 45)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Maze Explorer - Student Edition - C")
@@ -219,6 +220,7 @@ while running:
                 bullet = Bullet(player.rect.centerx, player.rect.centery, player.facing)
                 all_sprites.add(bullet)
                 bullets.add(bullet)
+
             if event.key == pygame.K_r:
                 #C Restart/teleport player back to start
                 player.rect.x = player.start_x
@@ -226,7 +228,7 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 #C Quit the game
                 running = False
-
+            
     # --- Updates ---
     # Update player (passing walls for collision check)
     player.update(walls)
@@ -270,7 +272,7 @@ while running:
         running = False
 
     # --- Drawing ---
-    screen.fill(BLACK)
+    screen.fill(C_BACKGROUND_PURPLE)
     all_sprites.draw(screen)
 
     pygame.display.flip()
