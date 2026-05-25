@@ -219,6 +219,13 @@ while running:
                 bullet = Bullet(player.rect.centerx, player.rect.centery, player.facing)
                 all_sprites.add(bullet)
                 bullets.add(bullet)
+            if event.key == pygame.K_r:
+                #C Restart/teleport player back to start
+                player.rect.x = player.start_x
+                player.rect.y = player.start_y
+            if event.key == pygame.K_ESCAPE:
+                #C Quit the game
+                running = False
 
     # --- Updates ---
     # Update player (passing walls for collision check)
