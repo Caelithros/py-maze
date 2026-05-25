@@ -19,7 +19,7 @@ FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (240, 230, 244)
 BLUE = (0, 0, 255)
-RED = (255, 0, 0)
+C_RED = (255, 50, 50)
 GREEN = (0, 255, 0)
 YELLOW = (255, 240, 0)
 PURPLE = (180, 20, 255)
@@ -77,9 +77,6 @@ class Player(pygame.sprite.Sprite):
             if event.key == pygame.K_DOWN:
                 self.rect.y= self.rect.y + self.speed
                 self.facing = "DOWN"
-            if event.key == pygame.K_QUIT:
-                pygame.quit()
-                sys.exit()
 
         # --- Wall Collision Logic (Provided so you don't get stuck!) ---
         # If the player hits a wall after moving, we push them back to their old position.
@@ -101,7 +98,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.Surface((TILE_SIZE*3/4, TILE_SIZE*3/4))
-        self.image.fill(RED)
+        self.image.fill(C_RED)
         self.rect = self.image.get_rect()
         self.rect.x = x * TILE_SIZE * 1.125
         self.rect.y = y * TILE_SIZE * 1.125
